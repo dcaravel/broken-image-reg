@@ -8,19 +8,30 @@ import (
 	"path/filepath"
 
 	"github.com/dcaravel/broken-image-reg/internal/env"
-	"github.com/google/go-containerregistry/pkg/registryfaker"
+	"github.com/google/go-containerregistry/pkg/registry"
 )
 
 func main() {
-	//dirname := getAndPrepStorageDir()
-	//reg := registry.New(registry.WithBlobHandler(registry.NewDiskBlobHandler(dirname)))
-	reg := registryfaker.New()
+	reg := hookedReg()
+	// reg := registryfaker.New()
 
 	addr := fmt.Sprintf("%s:%s", env.BindHost, env.BindPort)
 	log.Printf("Listening on %q", addr)
 	if err := http.ListenAndServe(addr, reg); err != nil {
 		log.Fatal(err)
 	}
+}
+
+// hookedReg uses the base registry provided by go-containerregistry/pkg/registry with
+// add hooks for controlling behavior
+func hookedReg() http.Handler {
+	dirname := getAndPrepStorageDir()
+	reg := registry.New(
+		registry.WithBlobHandler(registry.NewDiskBlobHandler(dirname)),
+		registry.WithManifestHook(manifestHook),
+	)
+
+	return reg
 }
 
 func getAndPrepStorageDir() string {
@@ -40,4 +51,12 @@ func getAndPrepStorageDir() string {
 	}
 
 	return dirname
+}
+
+func manifestHook(resp http.ResponseWriter, req *http.Request, repo, target string) bool {
+	if target == "latest" {
+		registry.WriteErr(resp, 403, "UNSUPPORTED", "latest tag is not allowed")
+		return true
+	}
+	return false
 }
