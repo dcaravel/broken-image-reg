@@ -1,0 +1,25 @@
+name: Docker Image CI
+
+on:
+  workflow_dispatch:
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout broken-image-reg
+      uses: actions/checkout@v3
+      with: 
+        path: "broken-image-reg"
+        
+    - name: Checkout go-containerregistry fork
+      uses: actions/checkout@v3
+      with:
+        repository: "dcaravel/go-containerregistry"
+        path: "go-containerregistry"
+        
+    - name: Build the Docker image
+      run: docker build . --file broken-image-reg/deployments/Dockerfile --tag brokenreg:latest
