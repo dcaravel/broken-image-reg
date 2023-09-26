@@ -23,12 +23,18 @@ jobs:
         
     - name: Build the Docker image
       run: docker build . --file broken-image-reg/deployments/Dockerfile --tag quay.io/dcaravel/brokenreg:latest
-              
-    - name: Push To Registry
-      uses: redhat-actions/push-to-registry@v2.7
+
+    - name: Login to Quay
+      uses: docker/login-action@v3
       with:
-        image: dcaravel/brokenreg
-        tags: latest
         registry: quay.io
-        username: ${{ secrets.quayuser }}
-        password: ${{ secrets.quaypass }}
+        username: ${{ secrets.QUAYUSER }}
+        password: ${{ secrets.QUAYPASS }}
+
+    - name: Push To Registry
+      uses: docker/build-push-action@v5
+      with:
+        push: true
+        tags: |
+          quay.io/dcaravel/brokenreg:latest
+
