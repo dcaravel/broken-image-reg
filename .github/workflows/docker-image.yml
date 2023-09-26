@@ -21,8 +21,8 @@ jobs:
         repository: "dcaravel/go-containerregistry"
         path: "go-containerregistry"
         
-    - name: Build the Docker image
-      run: docker build . --file broken-image-reg/deployments/Dockerfile --tag quay.io/dcaravel/brokenreg:latest
+#    - name: Build the Docker image
+#      run: docker build . --file broken-image-reg/deployments/Dockerfile --tag quay.io/dcaravel/brokenreg:latest
 
     - name: Login to Quay
       uses: docker/login-action@v3
@@ -31,9 +31,11 @@ jobs:
         username: ${{ secrets.QUAYUSER }}
         password: ${{ secrets.QUAYPASS }}
 
-    - name: Push To Registry
+    - name: Build and Push
       uses: docker/build-push-action@v5
       with:
+        context: .
+        file: broken-image-reg/deployments/Dockerfile
         push: true
         tags: |
           quay.io/dcaravel/brokenreg:latest
