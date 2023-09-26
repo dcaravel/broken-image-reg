@@ -3,7 +3,7 @@ package env
 import "os"
 
 var (
-	BindHost = registerStringEnv("BIND_HOST", "127.0.0.1")
+	BindHost = registerStringEnv("BIND_HOST", "0.0.0.0")
 	BindPort = registerStringEnv("BIND_PORT", "8080")
 
 	BlobDir = registerStringEnv("BLOB_DIR", "")
