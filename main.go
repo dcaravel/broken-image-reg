@@ -8,12 +8,13 @@ import (
 	"path/filepath"
 
 	"github.com/dcaravel/broken-image-reg/internal/env"
-	"github.com/google/go-containerregistry/pkg/registry"
+	"github.com/google/go-containerregistry/pkg/registryfaker"
 )
 
 func main() {
-	dirname := getAndPrepStorageDir()
-	reg := registry.New(registry.WithBlobHandler(registry.NewDiskBlobHandler(dirname)))
+	//dirname := getAndPrepStorageDir()
+	//reg := registry.New(registry.WithBlobHandler(registry.NewDiskBlobHandler(dirname)))
+	reg := registryfaker.New()
 
 	addr := fmt.Sprintf("%s:%s", env.BindHost, env.BindPort)
 	log.Printf("Listening on %q", addr)
