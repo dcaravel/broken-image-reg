@@ -22,4 +22,13 @@ jobs:
         path: "go-containerregistry"
         
     - name: Build the Docker image
-      run: docker build . --file broken-image-reg/deployments/Dockerfile --tag brokenreg:latest
+      run: docker build . --file broken-image-reg/deployments/Dockerfile --tag quay.io/dcaravel/brokenreg:latest
+              
+    - name: Push To Registry
+      uses: redhat-actions/push-to-registry@v2.7
+      with:
+        image: dcaravel/brokenreg
+        tags: latest
+        registry: quay.io
+        username: ${{ secrets.quayuser }}
+        password: ${{ secrets.quaypass }}
