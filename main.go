@@ -9,11 +9,12 @@ import (
 
 	"github.com/dcaravel/broken-image-reg/internal/env"
 	"github.com/google/go-containerregistry/pkg/registry"
+	"github.com/google/go-containerregistry/pkg/registryfaker"
 )
 
 func main() {
-	reg := hookedReg()
-	// reg := registryfaker.New()
+	// reg := hookedReg()
+	reg := registryfaker.New()
 
 	addr := fmt.Sprintf("%s:%s", env.BindHost, env.BindPort)
 	log.Printf("Listening on %q", addr)
