@@ -51,4 +51,4 @@ jobs:
         file: broken-image-reg/deployments/Dockerfile
         push: true
         tags: |
-          quay.io/dcaravel/brokenreg:{{ steps.set-tag.outputs.tag }}
+          quay.io/dcaravel/brokenreg:${{ steps.set-tag.outputs.tag }}
