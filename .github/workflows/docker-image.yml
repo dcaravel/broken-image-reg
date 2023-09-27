@@ -1,9 +1,14 @@
 name: Docker Image CI
 
 on:
-  workflow_dispatch:
+  pull_request:
+    types:
+    - opened
+    - reopened
+    - synchronize
   push:
     branches: [ "main" ]
+  workflow_dispatch:
 
 jobs:
 
@@ -30,6 +35,12 @@ jobs:
         username: ${{ secrets.QUAYUSER }}
         password: ${{ secrets.QUAYPASS }}
 
+    - name: Set tag
+      id: set-tag
+      run: |
+        tag="$(git describe --tags --abbrev=10 --long)"
+        echo "tag=$tag" >> "$GITHUB_OUTPUT"
+
     - name: Build and Push
       uses: docker/build-push-action@v5
       with:
@@ -37,5 +48,4 @@ jobs:
         file: broken-image-reg/deployments/Dockerfile
         push: true
         tags: |
-          quay.io/dcaravel/brokenreg:latest
-
+          quay.io/dcaravel/brokenreg:{{ steps.set-tag.outputs.tag }}
