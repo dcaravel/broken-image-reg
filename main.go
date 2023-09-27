@@ -14,7 +14,9 @@ import (
 
 func main() {
 	dirname := getAndPrepStorageDir()
-	reg := registryfaker.New(registryfaker.WithBlobHandler(registry.NewDiskBlobHandler(dirname)))
+	reg := registryfaker.New(
+		registryfaker.WithBlobHandler(registryfaker.NewDiskBlobHandler(dirname)),
+	)
 
 	addr := fmt.Sprintf("%s:%s", env.BindHost, env.BindPort)
 	log.Printf("Listening on %q", addr)
