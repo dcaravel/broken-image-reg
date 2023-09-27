@@ -21,7 +21,7 @@ spec:
         fsGroup: 1000
       containers:
         - name: broken-reg
-          image: quay.io/dcaravel/brokenreg:latest
+          image: quay.io/dcaravel/brokenreg:stable
           imagePullPolicy: Always
           command:
             - /brokenreg
@@ -48,11 +48,19 @@ spec:
             - mountPath: /etc/ssl/docker
               name: tls-cert
               readOnly: true
+            - mountPath: /.docker
+              name: registry-auth
+              readOnly: true
             - mountPath: /brokenregcache
               name: cache-vol
       volumes:
         - name: tls-cert
           secret:
             secretName: tls-cert
+            optional: true
+        - name: registry-auth
+          secret:
+            secretName: registry-auth
+            optional: true
         - name: cache-vol
           emptyDir: {}
