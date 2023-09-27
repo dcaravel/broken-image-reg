@@ -30,12 +30,12 @@ spec:
           livenessProbe:
             httpGet:
               scheme: HTTPS
-              path: /
+              path: /v2
               port: 8080
           readinessProbe:
             httpGet:
               scheme: HTTPS
-              path: /
+              path: /v2
               port: 8080
           env:
             - name: CERT_FILE
