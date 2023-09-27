@@ -38,6 +38,7 @@ jobs:
     - name: Set tag
       id: set-tag
       run: |
+        cd broken-image-reg
         tag="$(git describe --tags --abbrev=10 --long)"
         echo "tag=$tag" >> "$GITHUB_OUTPUT"
 
