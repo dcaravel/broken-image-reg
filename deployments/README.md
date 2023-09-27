@@ -7,10 +7,14 @@ oc create ns "${TEST_NAMESPACE}"
 # Grant nonroot to the default SA for the test namespace
 oc adm policy add-scc-to-user nonroot system:serviceaccount:"${TEST_NAMESPACE}":default
 
-# Create a secret with your TLS certs
+# Create a secret with your TLS certs (optional)
 oc -n "${TEST_NAMESPACE}" create secret tls tls-cert \
 --cert <path to complete chain of certs> \
 --key <path to private key>
+
+# Create a secret with your authenticated registries (optional)
+oc -n "${TEST_NAMESPACE}" create secret generic registry-auth \
+--from-file=config.json=<path/to/.docker/config.json>
 
 oc -n "${TEST_NAMESPACE}" apply -f deployment.yaml
 
