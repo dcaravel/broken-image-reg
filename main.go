@@ -13,8 +13,8 @@ import (
 )
 
 func main() {
-	// reg := hookedReg()
-	reg := registryfaker.New()
+	dirname := getAndPrepStorageDir()
+	reg := registryfaker.New(registryfaker.WithBlobHandler(registry.NewDiskBlobHandler(dirname)))
 
 	addr := fmt.Sprintf("%s:%s", env.BindHost, env.BindPort)
 	log.Printf("Listening on %q", addr)
@@ -27,18 +27,6 @@ func main() {
 			log.Fatal(err)
 		}
 	}
-}
-
-// hookedReg uses the base registry provided by go-containerregistry/pkg/registry with
-// added hooks for controlling behavior
-func hookedReg() http.Handler {
-	dirname := getAndPrepStorageDir()
-	reg := registry.New(
-		registry.WithBlobHandler(registry.NewDiskBlobHandler(dirname)),
-		registry.WithManifestHook(manifestHook),
-	)
-
-	return reg
 }
 
 func getAndPrepStorageDir() string {
