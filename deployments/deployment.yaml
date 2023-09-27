@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: broken-reg
+  labels:
+    app: broken-reg
+spec:
+  selector:
+    matchLabels:
+      app: broken-reg
+  replicas: 1
+  minReadySeconds: 5
+  template:
+    metadata:
+      labels:
+        app: broken-reg
+    spec:
+      containers:
+        - name: broken-reg
+          image: quay.io/dcaravel/brokenreg:latest
+          imagePullPolicy: Always
+          command:
+            - /brokenreg
+          ports:
+            - containerPort: 8080
+          livenessProbe:
+            httpGet:
+              scheme: HTTPS
+              path: /
+              port: 8080
+          readinessProbe:
+            httpGet:
+              scheme: HTTPS
+              path: /
+              port: 8080
+          env:
+            - name: CERT_FILE
+              value: "/etc/ssl/docker/tls.crt"
+            - name: KEY_FILE
+              value: "/etc/ssl/docker/tls.key"
+          volumeMounts:
+            - mountPath: /etc/ssl/docker
+              name: tls-cert
+              readOnly: true
+      volumes:
+        - name: tls-cert
+          secret:
+            secretName: tls-cert
