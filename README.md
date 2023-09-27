@@ -20,7 +20,18 @@ Layer contents will be stored at `$HOME/broken-reg` (by default)
 
 Refer to [internal/env/env.go](internal/env/env.go) for list of env vars
 
-## Using / API
+## API Brief
+
+Path | Example | Description
+--- | --- | ---
+`/broken/error`    | `docker pull $REG_HOST/broken/error:404`                 | Fabricates API errors
+`/broken/timeout`  | `docker pull $REG_HOST/broken/timeout:dur-5s`            | Responds with a timeout error after specified duration
+`/broken/random`   | `docker pull $REG_HOST/broken/random:layers-3_size-1024` | Fabricates a random image with specified number of layers and size
+`/broken/prepared` | `docker push/pull $REG_HOST/broken/prepared`             | Store/cache prepared images in the registry
+`<other>`          | `docker pull $REG_HOST/stackrox-io/main:4.2.0`           | Proxy and cache images from external registries based on path (defaults to `quay.io`)
+
+
+## API Details
 
 ### Error
 Produces HTTP errors based on tag provided
