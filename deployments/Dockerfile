@@ -11,8 +11,6 @@ RUN CGO_ENABLED=0 go build -o ../brokenreg . && chmod 755 ../brokenreg
 
 FROM registry.access.redhat.com/ubi8-minimal
 
-RUN mkdir /blobs && chmod a+rw /blobs
-
 COPY --from=builder /go/src/app/brokenreg .
 
 ENTRYPOINT [ "/brokenreg" ]
