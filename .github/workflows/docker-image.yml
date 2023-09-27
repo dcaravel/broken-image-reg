@@ -44,7 +44,12 @@ jobs:
       id: set-tag
       run: |
         cd broken-image-reg
-        tag="$(git describe --tags --abbrev=10 --long)"
+        if [[ -z "$(git tag --contains)" ]]; then
+          # PR/untagged add git SHA
+          tag="$(git describe --tags --abbrev=10 --long)"
+        else
+          tag="$(git tag --contains | head -1)"
+        fi
         echo "tag=$tag" >> "$GITHUB_OUTPUT"
 
     - name: Build and Push
