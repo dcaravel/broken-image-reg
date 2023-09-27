@@ -126,7 +126,9 @@ REG_HOST/broken/prepared:roxctl
 ```
 
 ### Proxy
-Proxies requests to quay.io to pull the image and cache it locally on the filesystem for future serving
+Proxies requests to another registry and caches locally
+
+Will default to `quay.io` if no hostname found in the image path
 
 Executed when none of the above APIs match the request
 
@@ -148,4 +150,29 @@ latest: Pulling from dcaravel/brokenreg
 Digest: sha256:dcb25b1ddc052c82ba825ee775a77e4a5947c5d7fd3e619f036a8d6cccccd1af
 Status: Downloaded newer image for quay.io/dcaravel/brokenreg:latest
 quay.io/dcaravel/brokenreg:latest
+```
+
+```sh
+$ docker pull nginx:1.24.0
+1.24.0: Pulling from library/nginx
+7dbc1adf280e: Pull complete 
+a7184f3665ed: Pull complete 
+f144d5d97503: Pull complete 
+9097eea98b48: Pull complete 
+356d4b647b64: Pull complete 
+608e661a622a: Pull complete 
+Digest: sha256:73341830a31bf12a44c846b6b323dd8a4fab7668e72c16e9124913ff097c9536
+Status: Downloaded newer image for nginx:1.24.0
+docker.io/library/nginx:1.24.0
+
+$ docker pull $REG_HOST/docker.io/library/nginx:1.24.0
+1.24.0: Pulling from nginx
+Digest: sha256:5be2b646dfda41632549b19795721e3e676903c7d94567838fb1aa0e39ae1bfc
+Status: Downloaded newer image for REG_HOST/docker.io/library/nginx:1.24.0
+REG_HOST/docker.io/library/nginx:1.24.0
+
+$ docker images
+REPOSITORY                         TAG                  IMAGE ID       CREATED       SIZE
+REG_HOST/docker.io/library/nginx   1.24.0               22c2ef579d56   7 days ago    142MB
+nginx                              1.24.0               22c2ef579d56   7 days ago    142MB
 ```
