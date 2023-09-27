@@ -18,8 +18,14 @@ func main() {
 
 	addr := fmt.Sprintf("%s:%s", env.BindHost, env.BindPort)
 	log.Printf("Listening on %q", addr)
-	if err := http.ListenAndServe(addr, reg); err != nil {
-		log.Fatal(err)
+	if env.CertFile.String() != "" {
+		if err := http.ListenAndServeTLS(addr, env.CertFile.String(), env.KeyFile.String(), reg); err != nil {
+			log.Fatal(err)
+		}
+	} else {
+		if err := http.ListenAndServe(addr, reg); err != nil {
+			log.Fatal(err)
+		}
 	}
 }
 

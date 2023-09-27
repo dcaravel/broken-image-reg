@@ -7,6 +7,9 @@ var (
 	BindPort = registerStringEnv("BIND_PORT", "8080")
 
 	BlobDir = registerStringEnv("BLOB_DIR", "")
+
+	CertFile = registerStringEnv("CERT_FILE", "")
+	KeyFile  = registerStringEnv("KEY_FILE", "")
 )
 
 type stringEnv struct {
