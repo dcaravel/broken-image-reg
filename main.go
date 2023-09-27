@@ -30,7 +30,7 @@ func main() {
 }
 
 // hookedReg uses the base registry provided by go-containerregistry/pkg/registry with
-// add hooks for controlling behavior
+// added hooks for controlling behavior
 func hookedReg() http.Handler {
 	dirname := getAndPrepStorageDir()
 	reg := registry.New(
