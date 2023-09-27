@@ -2,19 +2,22 @@
 
 ```
 TEST_NAMESPACE="broken-image-reg"
-kubectl create ns "${TEST_NAMESPACE}"
+oc create ns "${TEST_NAMESPACE}"
+
+# Grant nonroot to the default SA for the test namespace
+oc adm policy add-scc-to-user nonroot system:serviceaccount:"${TEST_NAMESPACE}":default
 
 # Create a secret with your TLS certs
-kubectl -n "${TEST_NAMESPACE}" create secret tls tls-cert \
+oc -n "${TEST_NAMESPACE}" create secret tls tls-cert \
 --cert <path to complete chain of certs> \
 --key <path to private key>
 
-kubectl -n "${TEST_NAMESPACE}" apply -f deployment.yaml
+oc -n "${TEST_NAMESPACE}" apply -f deployment.yaml
 
-kubectl -n "${TEST_NAMESPACE}" apply -f service.yaml
+oc -n "${TEST_NAMESPACE}" apply -f service.yaml
 
 # Get the ClusterIP for service
-kubectl -n "${TEST_NAMESPACE}" get svc/broken-reg -o=jsonpath='{.spec.clusterIPs[0]}'
+oc -n "${TEST_NAMESPACE}" get svc/broken-reg -o=jsonpath='{.spec.clusterIPs[0]}'
 
 # Give that IP a hostname corresponding to your TLS certs
 ... depends on DNS provider ...
