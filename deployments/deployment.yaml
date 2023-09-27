@@ -21,7 +21,7 @@ spec:
         fsGroup: 1000
       containers:
         - name: broken-reg
-          image: quay.io/dcaravel/brokenreg:0.0.2-11-g4456986fde
+          image: quay.io/dcaravel/brokenreg:stable
           imagePullPolicy: Always
           command:
             - /brokenreg
