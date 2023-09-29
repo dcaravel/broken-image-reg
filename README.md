@@ -1,6 +1,8 @@
 # broken-image-reg
 
-GOAL: An simple image registry that enables testing 'failure' scenarios
+A simple container image registry that also enables simulating error, timeout, etc. scenarios.
+
+The registry specific logic is in [this fork of the go-containerregistry](https://github.com/dcaravel/go-containerregistry).
 
 ## Developing
 
